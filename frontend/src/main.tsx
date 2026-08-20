@@ -1,0 +1,10 @@
+import React from "react";
+import { createRoot } from "react-dom/client";
+import "./assets/styles/index.scss";
+import { App } from "./App";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { AuthProvider } from "./auth/AuthContext";
+const rootElem=document.getElementById("root"); if(!rootElem) throw new Error("Root element not found");
+createRoot(rootElem).render(<React.StrictMode><Provider store={store}><BrowserRouter><AuthProvider><App/></AuthProvider></BrowserRouter></Provider></React.StrictMode>);

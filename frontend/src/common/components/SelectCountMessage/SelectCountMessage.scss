@@ -1,0 +1,6 @@
+@use "@/assets/styles/base/_mixins";
+@use "@/assets/styles/base/_variables" as *;
+.label-select {
+  margin-right: 5px;
+  color: $blue-bt-color;
+}

@@ -1,0 +1,25 @@
+@use "@/assets/styles/base/_mixins";
+@use "@/assets/styles/base/_variables" as *;
+.setting__form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+.setting__label {
+  color: $blue-bt-color;
+  font-weight: 500;
+  font-size: 14px;
+}
+.setting__input {
+  max-width: 300px;
+}
+.setting__btn {
+  width: 200px;
+  background-color: $blue-br-color;
+  box-shadow: none;
+}
+.wrap__container {
+  display: flex;
+  gap: 30px;
+}

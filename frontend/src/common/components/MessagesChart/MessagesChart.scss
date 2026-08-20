@@ -1,0 +1,74 @@
+.messages-chart-card {
+  padding: 18px 18px 14px;
+  border: 1px solid #e7ecf3;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(30, 45, 75, 0.055);
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 8px;
+
+    h2 {
+      margin: 3px 0 5px;
+      color: #14213d;
+      font-size: 18px;
+      letter-spacing: -0.015em;
+    }
+
+    p {
+      color: #7b8798;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  }
+
+  &__eyebrow {
+    color: #246bfd;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__metric {
+    min-width: 116px;
+    padding: 10px 14px;
+    border-radius: 13px;
+    background: #f6f8fc;
+    text-align: right;
+
+    span {
+      display: block;
+      margin-bottom: 4px;
+      color: #8190a4;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    strong {
+      color: #14213d;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  &__chart {
+    width: 100%;
+    height: 245px;
+  }
+}
+
+@media (max-width: 640px) {
+  .messages-chart-card {
+    padding: 18px 14px 14px;
+
+    &__header { flex-direction: column; }
+    &__metric { text-align: left; }
+    &__chart { height: 230px; }
+  }
+}

@@ -1,0 +1,213 @@
+.dashboard-page {
+  --dashboard-bg: #f6f8fb;
+  --card-bg: #ffffff;
+  --text-main: #14213d;
+  --text-muted: #6f7c91;
+  --border: #e7ecf3;
+  --primary: #246bfd;
+  --success: #12b76a;
+
+  min-height: calc(100vh - 60px);
+  margin: -25px;
+  padding: 34px;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(36, 107, 253, 0.08), transparent 26rem),
+    var(--dashboard-bg);
+  color: var(--text-main);
+
+  &__hero {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--text-main);
+  }
+
+  &__subtitle {
+    margin-top: 9px;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  &__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 14px;
+    border: 1px solid #dfe7f2;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #41526d;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 8px 30px rgba(23, 43, 77, 0.05);
+    white-space: nowrap;
+  }
+
+  &__live-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 0 4px rgba(18, 183, 106, 0.13);
+  }
+}
+
+.dashboard-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.dashboard-kpi {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card-bg);
+  box-shadow: 0 10px 30px rgba(30, 45, 75, 0.055);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(30, 45, 75, 0.09);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -28px;
+    bottom: -38px;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    opacity: 0.08;
+    background: currentColor;
+  }
+
+  &__icon {
+    display: grid;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: 13px;
+  }
+
+  &__body {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+
+  &__label {
+    margin-bottom: 7px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    color: var(--text-main);
+    font-size: clamp(24px, 2vw, 30px);
+    font-weight: 750;
+    line-height: 1;
+    letter-spacing: -0.03em;
+
+    small {
+      font-size: 14px;
+      font-weight: 650;
+      color: #637088;
+    }
+
+    &--status {
+      color: #079455;
+      font-size: 26px;
+    }
+  }
+
+  &__meta {
+    margin-top: 8px;
+    overflow: hidden;
+    color: #8a95a8;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &--devices {
+    color: #246bfd;
+    .dashboard-kpi__icon { background: #edf4ff; color: #246bfd; }
+  }
+
+  &--messages {
+    color: #7a5af8;
+    .dashboard-kpi__icon { background: #f2efff; color: #6941c6; }
+  }
+
+  &--database {
+    color: #f79009;
+    .dashboard-kpi__icon { background: #fff4e5; color: #dc6803; }
+  }
+
+  &--status {
+    color: #12b76a;
+    .dashboard-kpi__icon { background: #ecfdf3; color: #079455; }
+  }
+}
+
+.dashboard-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+@media (max-width: 1380px) {
+  .dashboard-charts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1100px) {
+  .dashboard-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .dashboard-page {
+    margin: -15px;
+    padding: 22px 15px 28px;
+
+    &__hero { flex-direction: column; }
+  }
+
+  .dashboard-kpis,
+  .dashboard-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}

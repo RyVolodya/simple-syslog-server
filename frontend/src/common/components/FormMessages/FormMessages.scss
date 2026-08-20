@@ -1,0 +1,111 @@
+@use "@/assets/styles/base/_mixins";
+@use "@/assets/styles/base/_variables" as *;
+@media (min-width: 320px) {
+  /* Головний контейнер форми */
+  .form-wrapper {
+    margin-top: 20px;
+    margin-bottom: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Сам блок форми */
+  .form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 100%; /* не виходить за межі wrapper */
+    box-sizing: border-box;
+    padding: 20px 10px;
+    border-radius: 6px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    &__input {
+      width: 100%;
+      max-width: 100%; /* ніколи не ширше батька */
+      box-sizing: border-box;
+      padding: 8px 12px;
+      font-size: 14px;
+
+      /* Щоб довгий текст у <option> не тягнув select */
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      border-radius: 6px;
+      border: 1px solid $blue-br-color;
+
+      @include mixins.font(400, 14px, 1.2, $gray-tx-color, 0.2px);
+    }
+    &__button {
+      @include mixins.font(500, 16px, 1.2, $white-tw-color, 0.2px);
+      padding: 8px;
+      border-radius: 6px;
+      background-color: #086daf;
+      border: 1px solid $blue-bt-color;
+      outline: none;
+      width: 100%;
+      box-shadow: rgba(10, 61, 95, 0.35) 0px -40px 20px -28px inset;
+    }
+    .form__date-range {
+      border-radius: 6px;
+
+      width: 100%;
+    }
+  }
+  .form__input option {
+    width: 100%;
+  }
+}
+@media (min-width: 920px) {
+  .form-wrapper {
+    max-width: 600px;
+    height: 150px;
+  }
+  .form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 рівні колонки */
+    gap: 12px; /* відступи між елементами */
+    align-items: center;
+  }
+
+  .form__input,
+  .form__button {
+    width: 100%; /* заповнюють комірку */
+    height: 38px;
+    border: 1px solid #0074c2;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  .form__button {
+    background-color: #0b71b9;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .form__button:hover {
+    background-color: #005f9e;
+  }
+}
+@media (min-width: 1200px) {
+  .form-wrapper {
+    max-width: 100%;
+  }
+  .form {
+    flex-direction: row;
+  }
+}

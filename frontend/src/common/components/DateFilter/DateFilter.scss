@@ -1,0 +1,77 @@
+@use "@/assets/styles/base/_mixins";
+@use "@/assets/styles/base/_variables" as *;
+.form__time {
+  position: relative;
+}
+/* Загальна обгортка форми */
+
+/* Інпут для вибору дати */
+.form__time {
+  position: relative;
+}
+
+.form__date-input {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 230px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.form__date-input:hover {
+  border-color: #3b82f6;
+}
+
+/* === 🔥 МОДАЛЬНЕ ВІКНО КАЛЕНДАРЯ === */
+.calendar-modal-overlay {
+  position: fixed;
+  inset: 0; /* top, right, bottom, left = 0 */
+  background-color: rgba(0, 0, 0, 0.4); /* затемнення фону */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* поверх усіх елементів */
+  animation: fadeInBg 0.2s ease-in-out;
+}
+
+/* Вміст модального вікна (сам календар) */
+.calendar-modal {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  padding: 16px;
+  z-index: 1000;
+  animation: fadeInModal 0.2s ease-in-out;
+}
+
+/* Анімації */
+@keyframes fadeInBg {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+  .calendar-modal {
+    width: 95%;
+    max-width: 420px;
+  }
+}

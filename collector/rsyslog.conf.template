@@ -1,0 +1,37 @@
+global(workDirectory="/var/spool/rsyslog")
+
+module(load="imudp")
+module(load="imtcp")
+module(load="ompgsql")
+
+input(type="imudp" port="514")
+input(type="imtcp" port="514")
+
+template(name="SimpleSyslogInsert" type="list" option.stdsql="on") {
+  constant(value="INSERT INTO systemevents (priority, fromhost, reported_hostname, message) VALUES (")
+  property(name="syslogpriority")
+  constant(value=", '")
+  property(name="fromhost-ip")
+  constant(value="', '")
+  property(name="hostname")
+  constant(value="', '")
+  property(name="syslogtag")
+  property(name="msg")
+  constant(value="')")
+}
+
+action(
+  type="ompgsql"
+  server="${PG_HOST}"
+  port="${PG_PORT}"
+  db="${PG_DATABASE}"
+  user="${PG_USER}"
+  pass="${PG_PASSWORD}"
+  template="SimpleSyslogInsert"
+  queue.type="linkedList"
+  queue.filename="pgsql"
+  queue.size="10000"
+  queue.workerthreads="2"
+  queue.saveonshutdown="on"
+  action.resumeRetryCount="-1"
+)

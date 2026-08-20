@@ -1,0 +1,38 @@
+.donut-card {
+  min-width: 0;
+  padding: 16px 14px 10px;
+  border: 1px solid #e7ecf3;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(30, 45, 75, 0.055);
+
+  &__header {
+    margin-bottom: 4px;
+
+    span {
+      color: #246bfd;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 4px 0 5px;
+      color: #14213d;
+      font-size: 15px;
+      letter-spacing: -0.015em;
+    }
+
+    p {
+      color: #7b8798;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+  }
+
+  &__chart { min-height: 238px; }
+
+  .apexcharts-legend-text { color: #56657a !important; }
+  .apexcharts-tooltip { border: 1px solid #e7ecf3 !important; box-shadow: 0 10px 24px rgba(30,45,75,.10) !important; }
+}

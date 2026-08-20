@@ -1,0 +1,14 @@
+@use "@/assets/styles/base/_mixins";
+@use "@/assets/styles/base/_variables" as *;
+.add-user-container {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.add-user-btn {
+  background-color: transparent;
+  font-weight: 600;
+  border: none;
+  color: $blue-tx-color;
+}

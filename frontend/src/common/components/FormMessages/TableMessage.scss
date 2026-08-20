@@ -1,0 +1,47 @@
+@use "@/assets/styles/base/_mixins";
+@use "@/assets/styles/base/_variables" as *;
+.total-massages {
+  color: $blue-tx-color;
+}
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto; /* додає горизонтальний скрол якщо таблиця ширша */
+  -webkit-overflow-scrolling: touch; /* плавний скрол на iOS */
+}
+
+/* Ваша таблиця (можна зберегти min-width, вона буде скролитись) */
+.table {
+  width: 100%;
+  min-width: 600px; /* якщо потрібно зберегти мінімальну ширину для читабельності */
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+.table th,
+.table td {
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+.table__head {
+  border-bottom: 1px solid #ddd;
+}
+.table__body {
+  color: $gray-tx-color;
+  background-color: #fafafa;
+}
+.header__tr {
+  font-weight: 400;
+  font-size: 16px;
+  color: $blue-bt-color;
+}
+.table th {
+  background-color: $azure-bg-color;
+  border: 1px solid rgba($blue-bt-color, 0.5);
+}
+.header__messages {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
