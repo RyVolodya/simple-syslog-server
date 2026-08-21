@@ -68,10 +68,6 @@ It includes:
 - Traffic concentration
 - Real-time updates without visible page reloads
 
-<p align="center">
-  <img src="docs/images/dashboard-dark.png" alt="Simple Syslog Server Dashboard Dark Theme" width="100%">
-</p>
-
 ---
 
 ## Messages Explorer
@@ -150,7 +146,7 @@ The interface includes both **Light** and **Dark** themes.
 The selected theme is remembered automatically by the browser.
 
 <p align="center">
-  <img src="docs/images/dark-theme.png" alt="Simple Syslog Server Dark Theme" width="100%">
+  <img src="docs/images/dashboard-dark.png" alt="Simple Syslog Server Dashboard Dark Theme" width="100%">
 </p>
 
 ---
@@ -160,10 +156,6 @@ The selected theme is remembered automatically by the browser.
 The web interface is optimized for desktop, tablet and mobile devices.
 
 On mobile devices, Syslog messages are displayed as responsive cards and full message text is preserved without truncation.
-
-<p align="center">
-  <img src="docs/images/mobile.png" alt="Simple Syslog Server Mobile Interface" width="420">
-</p>
 
 ---
 
