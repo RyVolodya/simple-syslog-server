@@ -357,10 +357,13 @@
 }
 
 .messages-table__message {
-  overflow: hidden;
+  overflow: visible;
   color: #263246 !important;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.45;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 12px !important;
 }
