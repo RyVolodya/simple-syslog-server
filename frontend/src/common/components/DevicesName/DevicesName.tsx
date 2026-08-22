@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from "react";
-import { FiAlertTriangle, FiCheckCircle, FiServer } from "react-icons/fi";
-import { useGetDevicesQuery, useUpdateDeviceNameMutation } from "../../services/DevicesName/DevicesName";
+import { FiAlertTriangle, FiCheckCircle, FiServer, FiTrash2 } from "react-icons/fi";
+import { useDeleteDeviceMutation, useGetDevicesQuery, useUpdateDeviceNameMutation } from "../../services/DevicesName/DevicesName";
 
 const RenameDevice: React.FC = () => {
   const { data: devices = [], isLoading } = useGetDevicesQuery();
   const [updateDeviceName, { isLoading: isSaving }] = useUpdateDeviceNameMutation();
+  const [deleteDevice, { isLoading: isDeleting }] = useDeleteDeviceMutation();
   const [selectedId, setSelectedId] = useState<number | undefined>();
   const [newName, setNewName] = useState("");
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -36,6 +37,28 @@ const RenameDevice: React.FC = () => {
     } catch (error) {
       console.error("Device rename failed:", error);
       setFeedback({ type: "error", text: "Unable to update the device display name." });
+    }
+  };
+
+
+  const handleDelete = async (id: number, displayName: string) => {
+    const confirmed = window.confirm(
+      `Delete "${displayName}" from Device inventory?\n\nThis is only allowed when the device has no syslog messages in the database.`,
+    );
+    if (!confirmed) return;
+
+    try {
+      await deleteDevice(id).unwrap();
+      if (selectedId === id) {
+        setSelectedId(undefined);
+        setNewName("");
+      }
+      setFeedback({ type: "success", text: "Unused device removed from inventory." });
+    } catch (error: any) {
+      setFeedback({
+        type: "error",
+        text: error?.data?.message || "Unable to delete the device.",
+      });
     }
   };
 
@@ -100,13 +123,14 @@ const RenameDevice: React.FC = () => {
                   <th>Reported hostname</th>
                   <th>Display name</th>
                   <th>Hostname status</th>
+                  <th className="settings-device-table__actions-heading">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {isLoading ? (
-                  <tr><td colSpan={4} className="settings-device-table__empty">Loading devices...</td></tr>
+                  <tr><td colSpan={5} className="settings-device-table__empty">Loading devices...</td></tr>
                 ) : devices.length === 0 ? (
-                  <tr><td colSpan={4} className="settings-device-table__empty">No syslog devices have been discovered yet.</td></tr>
+                  <tr><td colSpan={5} className="settings-device-table__empty">No syslog devices have been discovered yet.</td></tr>
                 ) : devices.map((device) => (
                   <tr key={device.id}>
                     <td><code>{device.ip}</code></td>
@@ -117,6 +141,27 @@ const RenameDevice: React.FC = () => {
                         <span className="settings-device-status settings-device-status--valid"><FiCheckCircle /> Valid</span>
                       ) : (
                         <span className="settings-device-status settings-device-status--ignored"><FiAlertTriangle /> Ignored</span>
+                      )}
+                    </td>
+                    <td className="settings-device-table__actions">
+                      {Number(device.messageCount ?? 0) === 0 ? (
+                        <button
+                          type="button"
+                          className="settings-device-delete"
+                          title="Delete unused device"
+                          aria-label={`Delete ${device.name}`}
+                          onClick={() => void handleDelete(device.id, device.name)}
+                          disabled={isDeleting}
+                        >
+                          <FiTrash2 />
+                        </button>
+                      ) : (
+                        <span
+                          className="settings-device-in-use"
+                          title={`${Number(device.messageCount ?? 0).toLocaleString()} message(s) still stored`}
+                        >
+                          In use
+                        </span>
                       )}
                     </td>
                   </tr>

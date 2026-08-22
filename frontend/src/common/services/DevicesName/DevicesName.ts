@@ -22,13 +22,25 @@ export const devicesApi = createApi({
         method: "PATCH",
         body: { name },
       }),
-      invalidatesTags: ["Devices"], // після оновлення — оновить кеш
+      invalidatesTags: ["Devices"],
+    }),
+
+    deleteDevice: builder.mutation<{ ok: boolean; id: number }, number>({
+      query: (id) => ({
+        url: `/devices/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Devices"],
     }),
   }),
 });
 
-export const { useGetDevicesQuery, useGetDeviceByIdQuery, useUpdateDeviceNameMutation } =
-  devicesApi;
+export const {
+  useGetDevicesQuery,
+  useGetDeviceByIdQuery,
+  useUpdateDeviceNameMutation,
+  useDeleteDeviceMutation,
+} = devicesApi;
 ///----------------------------------------------------------
 //import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 

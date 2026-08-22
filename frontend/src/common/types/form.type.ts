@@ -19,6 +19,7 @@ export interface Device {
   reportedHostnameValid: boolean;
   firstSeen?: string;
   lastSeen?: string;
+  messageCount?: number;
   messages?: MessageForm[];
 }
 

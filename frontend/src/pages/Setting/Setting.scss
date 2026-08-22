@@ -477,3 +477,59 @@
   .settings-row > .settings-button,
   .settings-device-editor .settings-button { margin-top: 0; }
 }
+
+
+.settings-device-table__actions-heading,
+.settings-device-table__actions {
+  width: 84px;
+  text-align: center !important;
+}
+
+.settings-device-delete {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+.settings-device-delete:hover:not(:disabled) {
+  border-color: #fca5a5;
+  background: #fee2e2;
+  transform: translateY(-1px);
+}
+
+.settings-device-delete:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.settings-device-in-use {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+:root[data-theme="dark"] {
+  .settings-device-delete {
+    border-color: #5f2a32;
+    background: #2a171b;
+    color: #f87171;
+  }
+
+  .settings-device-delete:hover:not(:disabled) {
+    border-color: #7f3540;
+    background: #351b21;
+  }
+
+  .settings-device-in-use {
+    color: #64748b;
+  }
+}
