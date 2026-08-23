@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import { pool } from "./db";
 export function startCron() {
-  cron.schedule("0 2 * * *", async () => {
+  cron.schedule("0 * * * *", async () => {
     try {
       const r = await pool.query("SELECT retention_days FROM settings WHERE id=1");
       const days = Number(r.rows[0]?.retention_days ?? 365);
