@@ -35,10 +35,12 @@ const severityOptions = [
 ];
 
 const cardConfig = [
-  { severity: 6, label: "Informational", icon: LuInfo, className: "info" },
-  { severity: 3, label: "Error", icon: LuCircleX, className: "error" },
-  { severity: 4, label: "Warning", icon: LuCircleAlert, className: "warning" },
-  { severity: 2, label: "Critical", icon: LuShieldAlert, className: "critical" },
+  { severities: [6, 5], label: "Informational/Notice", icon: LuInfo, className: "info" },
+  { severities: [3], label: "Error", icon: LuCircleX, className: "error" },
+  { severities: [4], label: "Warning", icon: LuCircleAlert, className: "warning" },
+  { severities: [2], label: "Critical", icon: LuShieldAlert, className: "critical" },
+  { severities: [1], label: "Alert", icon: LuCircleAlert, className: "alert" },
+  { severities: [0], label: "Emergency", icon: LuShieldAlert, className: "emergency" },
 ];
 
 
@@ -129,8 +131,12 @@ const MessagesPage = () => {
   const messages = data?.items ?? [];
   const pagination = data?.pagination ?? { page: 1, limit: 10, total: 0, totalPages: 1 };
 
-  const statCount = (severity: number) =>
-    severityStats.find((item) => item.severity === severity)?.count ?? 0;
+  const statCount = (severities: number[]) =>
+    severities.reduce(
+      (total, severity) =>
+        total + (severityStats.find((item) => item.severity === severity)?.count ?? 0),
+      0,
+    );
 
   const applyFilters = (event: FormEvent) => {
     event.preventDefault();
@@ -144,16 +150,17 @@ const MessagesPage = () => {
     }));
   };
 
-  const applySeverityCard = (severity: number) => {
+  const applySeverityCard = (severities: number[]) => {
     const now = new Date();
     const from = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    setDraftType(String(severity));
+    const typeFilter = severities.join(",");
+    setDraftType(severities.length === 1 ? String(severities[0]) : "");
     setDraftFrom("");
     setDraftTo("");
     setPage(1);
     setLimit(10);
     setFilters({
-      type: String(severity),
+      type: typeFilter,
       fromTime: from.toISOString(),
       toTime: now.toISOString(),
     });
@@ -287,18 +294,18 @@ ${result.truncated ? `<footer>Export limited to the first ${result.maxRows?.toLo
     <section className="messages-page">
       {!isFiltered && (
         <div className="severity-cards">
-          {cardConfig.map(({ severity, label, icon: Icon, className }) => (
+          {cardConfig.map(({ severities, label, icon: Icon, className }) => (
             <button
-              key={severity}
+              key={className}
               type="button"
               className={`severity-card severity-card--${className}`}
-              onClick={() => applySeverityCard(severity)}
+              onClick={() => applySeverityCard(severities)}
               title={`Show ${label.toLowerCase()} messages from the last 24 hours`}
             >
               <div className="severity-card__icon"><Icon size={22} /></div>
               <div>
                 <span className="severity-card__label">{label}</span>
-                <strong>{statCount(severity).toLocaleString()}</strong>
+                <strong>{statCount(severities).toLocaleString()}</strong>
                 <small>Last 24 hours</small>
               </div>
             </button>

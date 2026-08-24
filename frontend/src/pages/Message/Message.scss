@@ -68,7 +68,7 @@
 
 .severity-cards {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 18px;
 }
@@ -134,10 +134,14 @@
 .severity-card--error .severity-card__icon { color: #dc2626; background: #fef2f2; }
 .severity-card--warning .severity-card__icon { color: #d97706; background: #fff7ed; }
 .severity-card--critical .severity-card__icon { color: #9333ea; background: #faf5ff; }
+.severity-card--alert .severity-card__icon { color: #c2410c; background: #fff7ed; }
+.severity-card--emergency .severity-card__icon { color: #b91c1c; background: #fef2f2; }
 .severity-card--info:hover { border-color: #bfdbfe; }
 .severity-card--error:hover { border-color: #fecaca; }
 .severity-card--warning:hover { border-color: #fed7aa; }
 .severity-card--critical:hover { border-color: #e9d5ff; }
+.severity-card--alert:hover { border-color: #fdba74; }
+.severity-card--emergency:hover { border-color: #fca5a5; }
 
 .messages-filter,
 .messages-table-card {
@@ -667,5 +671,18 @@
     .messages-table td::before {
       color: #718096;
     }
+  }
+}
+
+
+:root[data-theme="dark"] {
+  .severity-card--alert .severity-card__icon {
+    background: #2b1b12;
+    color: #fb923c;
+  }
+
+  .severity-card--emergency .severity-card__icon {
+    background: #2b1518;
+    color: #f87171;
   }
 }

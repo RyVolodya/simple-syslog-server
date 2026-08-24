@@ -32,8 +32,18 @@ const buildWhere = ({ deviceId, type, from, to, search }: QueryFilters) => {
   }
 
   if (type !== undefined && type !== "") {
-    params.push(Number(type));
-    where.push(`(s.priority & 7) = $${params.length}`);
+    const severities = String(type)
+      .split(",")
+      .map((value) => Number(value.trim()))
+      .filter((value) => Number.isInteger(value) && value >= 0 && value <= 7);
+
+    if (severities.length === 1) {
+      params.push(severities[0]);
+      where.push(`(s.priority & 7) = $${params.length}`);
+    } else if (severities.length > 1) {
+      params.push(severities);
+      where.push(`(s.priority & 7) = ANY($${params.length}::int[])`);
+    }
   }
 
   if (from) {
