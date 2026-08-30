@@ -55,6 +55,7 @@ export const messagesFilterApi = createApi({
   endpoints: (builder) => ({
     getDevices: builder.query<Device[], void>({
       query: () => "/list-devices",
+      keepUnusedDataFor: 0,
     }),
     getFilteredMessages: builder.query<MessagesResponse, MessageQuery>({
       query: ({ deviceId, type, fromTime, toTime, search, page = 1, limit = 10 }) => {

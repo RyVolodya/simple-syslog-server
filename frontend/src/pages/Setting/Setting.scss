@@ -533,3 +533,206 @@
     color: #64748b;
   }
 }
+
+
+/* v1.6.31 - destructive device purge workflow */
+.settings-device-table__actions {
+  width: 112px;
+}
+
+.settings-device-delete--text {
+  width: auto;
+  min-width: 82px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.settings-device-message-count {
+  display: block;
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.settings-device-delete-dialog {
+  width: min(520px, 100%);
+}
+
+.settings-device-delete-dialog__header,
+.settings-device-delete-dialog__title {
+  display: flex;
+  align-items: center;
+}
+
+.settings-device-delete-dialog__header {
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.settings-device-delete-dialog__title { gap: 12px; }
+
+.settings-device-delete-dialog__icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 19px;
+}
+
+.settings-device-delete-dialog__icon--success {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.settings-device-delete-dialog__icon--deleting {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.settings-device-delete-dialog__close {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 9px;
+  background: #f1f5f9;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.settings-device-delete-warning,
+.settings-device-delete-success,
+.settings-device-delete-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 14px;
+  border-radius: 12px;
+}
+
+.settings-device-delete-warning {
+  border: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.settings-device-delete-success {
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.settings-device-delete-error {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.settings-device-delete-warning > svg,
+.settings-device-delete-success > svg,
+.settings-device-delete-error > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  font-size: 18px;
+}
+
+.settings-device-delete-warning strong,
+.settings-device-delete-success strong,
+.settings-device-delete-error strong { display: block; font-size: 13px; }
+.settings-device-delete-warning span,
+.settings-device-delete-success p,
+.settings-device-delete-error p { display: block; margin: 4px 0 0; font-size: 12px; line-height: 1.5; }
+
+.settings-device-delete-summary {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.settings-device-delete-summary > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+}
+.settings-device-delete-summary span { color: #64748b; }
+.settings-device-delete-summary strong { color: #0f172a; text-align: right; }
+
+.settings-device-delete-progress {
+  padding: 8px 2px 2px;
+  text-align: center;
+}
+.settings-device-delete-progress > strong { display: block; margin-top: 15px; color: #0f172a; font-size: 14px; }
+.settings-device-delete-progress > p { margin: 6px auto 14px; max-width: 420px; color: #64748b; font-size: 12px; line-height: 1.5; }
+
+.settings-device-delete-progress__bar {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+.settings-device-delete-progress__bar span {
+  display: block;
+  width: 48%;
+  height: 100%;
+  border-radius: inherit;
+  background: #2563eb;
+  animation: settings-delete-progress 1.1s ease-in-out infinite alternate;
+}
+
+.settings-device-delete-progress__steps {
+  display: grid;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #eef2f7;
+  text-align: left;
+}
+.settings-device-delete-progress__steps span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+}
+.settings-device-delete-progress__steps .is-active { color: #2563eb; }
+.settings-device-delete-step-dot { width: 12px; height: 12px; border: 2px solid #cbd5e1; border-radius: 999px; }
+.settings-device-delete-spinner { animation: settings-delete-spin .8s linear infinite; }
+.settings-delete-confirm { display: inline-flex; align-items: center; gap: 7px; }
+
+@keyframes settings-delete-spin { to { transform: rotate(360deg); } }
+@keyframes settings-delete-progress { from { transform: translateX(-5%); } to { transform: translateX(110%); } }
+
+:root[data-theme="dark"] {
+  .settings-device-delete-dialog__header { border-color: #263244; }
+  .settings-device-delete-dialog__icon { background: #2b1518; color: #f87171; }
+  .settings-device-delete-dialog__icon--success { background: #13261d; color: #4ade80; }
+  .settings-device-delete-dialog__icon--deleting { background: #13233d; color: #60a5fa; }
+  .settings-device-delete-dialog__close { background: #1e293b; color: #94a3b8; }
+  .settings-device-delete-warning { border-color: #653719; background: #2a1d12; color: #fdba74; }
+  .settings-device-delete-success { border-color: #22543a; background: #13261d; color: #86efac; }
+  .settings-device-delete-error { border-color: #5f2a32; background: #2b1518; color: #fca5a5; }
+  .settings-device-delete-summary { border-color: #263244; background: #111827; }
+  .settings-device-delete-summary span { color: #94a3b8; }
+  .settings-device-delete-summary strong,
+  .settings-device-delete-progress > strong { color: #e5e7eb; }
+  .settings-device-delete-progress > p { color: #94a3b8; }
+  .settings-device-delete-progress__bar { background: #273449; }
+  .settings-device-delete-progress__steps { border-color: #263244; }
+}

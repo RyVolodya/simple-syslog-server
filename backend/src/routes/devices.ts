@@ -61,7 +61,8 @@ router.delete("/:id", async (req, res, next) => {
     }
 
     const deviceResult = await client.query(
-      `SELECT id, fromhost
+      `SELECT id, fromhost,
+              syslog_device_display_name(name, reported_hostname, fromhost) AS name
        FROM devices
        WHERE id = $1
        FOR UPDATE`,
@@ -74,26 +75,26 @@ router.delete("/:id", async (req, res, next) => {
       return res.status(404).json({ message: "Device not found" });
     }
 
-    const messageResult = await client.query(
-      `SELECT EXISTS(
-         SELECT 1
-         FROM systemevents
-         WHERE fromhost = $1
-       ) AS "hasMessages"`,
+    // Purge all Syslog data for this source first. The fromhost index keeps
+    // this operation efficient even when systemevents contains many rows.
+    const messagesResult = await client.query(
+      `DELETE FROM systemevents
+       WHERE fromhost = $1`,
       [device.fromhost],
     );
 
-    if (Boolean(messageResult.rows[0]?.hasMessages)) {
-      await client.query("ROLLBACK");
-      return res.status(409).json({
-        message: "Device still has syslog messages and cannot be deleted.",
-      });
-    }
+    const deletedMessages = messagesResult.rowCount ?? 0;
 
     await client.query("DELETE FROM devices WHERE id = $1", [id]);
     await client.query("COMMIT");
 
-    res.json({ ok: true, id });
+    res.json({
+      ok: true,
+      id,
+      name: device.name,
+      ip: device.fromhost,
+      deletedMessages,
+    });
   } catch (error) {
     await client.query("ROLLBACK").catch(() => undefined);
     next(error);

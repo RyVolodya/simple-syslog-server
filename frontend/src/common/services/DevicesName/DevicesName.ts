@@ -25,7 +25,10 @@ export const devicesApi = createApi({
       invalidatesTags: ["Devices"],
     }),
 
-    deleteDevice: builder.mutation<{ ok: boolean; id: number }, number>({
+    deleteDevice: builder.mutation<
+      { ok: boolean; id: number; name: string; ip: string; deletedMessages: number },
+      number
+    >({
       query: (id) => ({
         url: `/devices/${id}`,
         method: "DELETE",
