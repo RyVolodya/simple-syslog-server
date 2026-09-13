@@ -88,6 +88,7 @@ router.get("/timezone", async (_req, res) => {
 router.use("/auth", auth);
 router.use(requireAuth);
 router.use(requireCompletedPasswordChange);
+router.use("/admin", admin);
 router.use(blockOperatorWrites);
 router.use("/devices", devices);
 router.use("/list-devices", listDevices);
@@ -95,5 +96,5 @@ router.use("/messages-filter", messageFilter);
 router.use("/messages", messageLimit);
 router.use("/stats", stats);
 router.use("/settings", requireAdministrator, settings);
-router.use("/admin", requireAdministrator, admin);
+
 export default router;

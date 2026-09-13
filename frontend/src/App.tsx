@@ -76,7 +76,7 @@ export const App: React.FC = () => {
             <Route path="/" element={<Navigate to="/dashboard" replace/>}/>
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/message" element={<Message/>}/>
-            <Route path="/setting" element={user.role === "administrator" ? <Setting/> : <Navigate to="/dashboard" replace/>}/>
+            <Route path="/setting" element={<Setting/>}/>
             <Route path="*" element={<Navigate to="/dashboard" replace/>}/>
           </Routes>
         </main>

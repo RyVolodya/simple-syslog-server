@@ -6,7 +6,6 @@ import { PiHouse } from "react-icons/pi";
 import { HiOutlineServerStack } from "react-icons/hi2";
 import { FiX } from "react-icons/fi";
 import "./Sidebar.scss";
-import { useAuth } from "../../../auth/AuthContext";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -18,7 +17,7 @@ interface SidebarProps {
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: PiHouse },
   { to: "/message", label: "Messages", icon: LuMessageSquareText },
-  { to: "/setting", label: "Settings", icon: IoSettingsOutline, adminOnly: true },
+  { to: "/setting", label: "Settings", icon: IoSettingsOutline },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -27,8 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onToggleCollapse,
   onCloseMobile,
 }) => {
-  const { user } = useAuth();
-  const visibleNavItems = navItems.filter((item) => !item.adminOnly || user?.role === "administrator");
+  const visibleNavItems = navItems;
   return (
     <>
       <aside className={`sidebar ${collapsed ? "sidebar--collapsed" : ""} ${mobileOpen ? "sidebar--mobile-open" : ""}`}>
