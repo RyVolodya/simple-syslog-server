@@ -1,4 +1,7 @@
 .messages-chart-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding: 18px 18px 14px;
   border: 1px solid #e7ecf3;
   border-radius: 18px;
@@ -59,12 +62,22 @@
 
   &__chart {
     width: 100%;
+    min-width: 0;
     height: 245px;
+    overflow: hidden;
+  }
+
+  .recharts-responsive-container {
+    width: 100% !important;
+    min-width: 0 !important;
   }
 }
 
 @media (max-width: 640px) {
   .messages-chart-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
     padding: 18px 14px 14px;
 
     &__header { flex-direction: column; }

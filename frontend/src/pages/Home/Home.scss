@@ -187,7 +187,8 @@
 
 .dashboard-primary-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 0.30fr) minmax(0, 0.70fr);
+  width: 100%;
+  grid-template-columns: minmax(240px, 30%) minmax(0, 1fr);
   gap: 16px;
   align-items: stretch;
   margin-bottom: 16px;
@@ -221,7 +222,7 @@
 
 @media (max-width: 1100px) {
   .dashboard-primary-grid {
-    grid-template-columns: minmax(240px, 0.36fr) minmax(0, 0.64fr);
+    grid-template-columns: minmax(220px, 34%) minmax(0, 1fr);
   }
 }
 

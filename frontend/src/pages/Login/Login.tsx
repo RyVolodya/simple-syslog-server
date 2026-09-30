@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { FiLock, FiUser } from "react-icons/fi";
-import { HiOutlineServerStack } from "react-icons/hi2";
 import { useAuth } from "../../auth/AuthContext";
 import "./Login.scss";
 
@@ -24,7 +23,6 @@ const Login: React.FC = () => {
   return <div className="login-page">
     <div className="login-card">
       <div className="login-brand"><div className="login-brand__mark">S</div><div><strong>Simple Syslog</strong><span>Server</span></div></div>
-      <div className="login-icon"><HiOutlineServerStack /></div>
       <h1>Welcome back</h1><p>Sign in to access your syslog workspace.</p>
       <form onSubmit={submit}>
         <label>Username<div className="login-input"><FiUser/><input value={username} onChange={e=>setUsername(e.target.value)} autoComplete="username" autoFocus /></div></label>

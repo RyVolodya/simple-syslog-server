@@ -96,3 +96,47 @@ address {
     padding: 15px;
   }
 }
+
+
+/* Theme-aware horizontal/vertical scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #aab5c5 #eef2f7;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #eef2f7;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid #eef2f7;
+  border-radius: 999px;
+  background: #aab5c5;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #8795a9;
+}
+
+html[data-theme="dark"] * {
+  scrollbar-color: #46546a #151d2a;
+}
+
+html[data-theme="dark"] *::-webkit-scrollbar-track {
+  background: #151d2a;
+}
+
+html[data-theme="dark"] *::-webkit-scrollbar-thumb {
+  border-color: #151d2a;
+  background: #46546a;
+}
+
+html[data-theme="dark"] *::-webkit-scrollbar-thumb:hover {
+  background: #617089;
+}

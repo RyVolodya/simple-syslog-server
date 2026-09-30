@@ -15,7 +15,10 @@ import { ServerTimeZoneContext } from "./common/timezone/ServerTimeZoneContext";
 export const App: React.FC = () => {
   const { user, loading } = useAuth();
   const [appName, setAppName] = useState(() => localStorage.getItem("appName") || "Simple Syslog Server");
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth >= 761 && window.innerWidth <= 1024;
+  });
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">(
     () => (localStorage.getItem("theme") === "dark" ? "dark" : "light")
@@ -23,6 +26,18 @@ export const App: React.FC = () => {
   const [serverTimeZone, setServerTimeZone] = useState({ timeZone: null as string | null, offsetMinutes: 0 });
 
   useEffect(() => { localStorage.setItem("appName", appName); document.title = appName; }, [appName]);
+  useEffect(() => {
+    let wasTablet = window.innerWidth >= 761 && window.innerWidth <= 1024;
+
+    const handleResponsiveSidebar = () => {
+      const isTablet = window.innerWidth >= 761 && window.innerWidth <= 1024;
+      if (isTablet && !wasTablet) setSidebarCollapsed(true);
+      wasTablet = isTablet;
+    };
+
+    window.addEventListener("resize", handleResponsiveSidebar);
+    return () => window.removeEventListener("resize", handleResponsiveSidebar);
+  }, []);
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("theme", theme);
