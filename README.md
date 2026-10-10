@@ -675,9 +675,10 @@ Pull requests are also welcome.
 
 ## License
 
-This project is licensed under the **GNU General Public License v3.0**.
+This project is licensed under the GPLv3 License.
+See the [LICENSE](LICENSE) file for details.
 
-See `LICENSE` for details.
+Copyright © 2026 Volodymyr Rybak.
 
 ---
 
