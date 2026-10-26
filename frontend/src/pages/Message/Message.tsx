@@ -35,12 +35,14 @@ const severityOptions = [
 ];
 
 const cardConfig = [
-  { severities: [6, 5], label: "Informational/Notice", icon: LuInfo, className: "info" },
-  { severities: [3], label: "Error", icon: LuCircleX, className: "error" },
+  { severities: [6], label: "Informational", icon: LuInfo, className: "info" },
+  { severities: [5], label: "Notice", icon: LuInfo, className: "notice" },
   { severities: [4], label: "Warning", icon: LuCircleAlert, className: "warning" },
+  { severities: [3], label: "Error", icon: LuCircleX, className: "error" },
   { severities: [2], label: "Critical", icon: LuShieldAlert, className: "critical" },
   { severities: [1], label: "Alert", icon: LuCircleAlert, className: "alert" },
   { severities: [0], label: "Emergency", icon: LuShieldAlert, className: "emergency" },
+  { severities: [7], label: "Debug", icon: LuActivity, className: "debug" },
 ];
 
 

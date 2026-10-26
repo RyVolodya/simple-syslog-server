@@ -1,13 +1,9 @@
-import { pool } from "../db";
 import { getStatsDevices } from "../services/statsDevices";
 import { broadcast } from "../websocket/broadcaster";
+import { startPeriodicStats } from "./periodicStats";
 
 export async function listenDeviceStats() {
-  const client = await pool.connect();
-  await client.query("LISTEN stats_channel");
-  client.on("notification", async () => {
-    try { broadcast("device_stats", await getStatsDevices()); }
-    catch (err) { console.error("device stats broadcast error", err); }
+  startPeriodicStats("devices", 5000, async () => {
+    broadcast("device_stats", await getStatsDevices());
   });
-  client.on("error", () => setTimeout(() => listenDeviceStats().catch(console.error), 5000));
 }

@@ -1,7 +1,7 @@
 import "./MessagesChart.scss";
 import { useGetStatsQuery } from "../../services/messages/createApiMessChart";
 import { useEffect, useMemo, useState } from "react";
-import { formatServerHour, useServerTimeZone } from "../../timezone/ServerTimeZoneContext";
+import { useServerTimeZone } from "../../timezone/ServerTimeZoneContext";
 import {
   CartesianGrid,
   Line,
@@ -51,7 +51,16 @@ export default function MessagesChart() {
     [liveData],
   );
 
-  const formatHour = (value: string) => formatServerHour(value, serverTimeZone);
+  const formatHour = (value: string) => {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return new Intl.DateTimeFormat("en-GB", {
+      timeZone: serverTimeZone.timeZone || "UTC",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
+  };
 
   return (
     <section className="messages-chart-card">
@@ -59,7 +68,7 @@ export default function MessagesChart() {
         <div>
           <span className="messages-chart-card__eyebrow">Traffic</span>
           <h2>Messages over the last 24 hours</h2>
-          <p>Hourly syslog event volume with live updates.</p>
+          <p>Syslog event volume in 10-minute intervals with live updates.</p>
         </div>
         <div className="messages-chart-card__metric">
           <span>24h total</span>
