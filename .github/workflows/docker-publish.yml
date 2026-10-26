@@ -52,7 +52,7 @@ jobs:
         with:
           images: ghcr.io/ryvolodya/simple-syslog-${{ matrix.name }}
           tags: |
-            type=semver,pattern={{version}},value=${{ inputs.release_tag || github.ref_name }}
+            type=raw,value=${{ inputs.release_tag || github.ref_name }},priority=100
             type=raw,value=latest,enable=${{ github.event_name == 'push' }}
 
       - name: Build and push
