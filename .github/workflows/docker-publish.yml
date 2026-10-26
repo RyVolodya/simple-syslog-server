@@ -3,15 +3,21 @@ name: Docker Publish
 on:
   push:
     tags:
-      - 'v*'
+      - 'v.*'
 
   workflow_dispatch:
     inputs:
       release_tag:
-        description: 'Existing release tag'
+        description: 'Git release tag (example: v.1.6.36)'
         required: true
-        default: 'v1.6.36'
+        default: 'v.1.6.36'
         type: string
+
+      publish_latest:
+        description: 'Also publish Docker latest tag'
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -33,8 +39,20 @@ jobs:
       - name: Checkout release source
         uses: actions/checkout@v4
         with:
-          ref: refs/tags/${{ inputs.release_tag }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref }}
           fetch-depth: 0
+
+      - name: Validate release tag
+        env:
+          RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid release tag: $RELEASE_TAG"
+            exit 1
+          fi
+
+          echo "RELEASE_TAG=$RELEASE_TAG" >> "$GITHUB_ENV"
+          echo "IMAGE_VERSION=${RELEASE_TAG#v.}" >> "$GITHUB_ENV"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -51,9 +69,11 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/ryvolodya/simple-syslog-${{ matrix.name }}
+          flavor: |
+            latest=false
           tags: |
-            type=raw,value=${{ inputs.release_tag || github.ref_name }},priority=100
-            type=raw,value=latest,enable=${{ github.event_name == 'push' }}
+            type=raw,value=${{ env.IMAGE_VERSION }}
+            type=raw,value=latest,enable=${{ github.event_name == 'push' || inputs.publish_latest == true }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
