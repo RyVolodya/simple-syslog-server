@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { useSubscribeDevicesPercentStatsQuery } from "../../services/DevicesPercent/DevicesPercent";
 import "./ApexChart.scss";
@@ -11,18 +11,34 @@ export interface StatsPayload {
 
 const ApexChartLeft: React.FC = () => {
   const { data } = useSubscribeDevicesPercentStatsQuery();
+  const [selectedDevice, setSelectedDevice] = useState<string | null>(null);
   const stats: StatsPayload[] = Array.isArray(data) ? data : [];
   const series = stats.map((item) => Number(item.messages || 0));
   const labels = stats.map((item) => item.device_id || "Unknown");
-  const total = stats.reduce((sum, item) => sum + Number(item.messages || 0), 0);
+  const total = series.reduce((sum, count) => sum + count, 0);
+  const selectedIndex = selectedDevice === null ? -1 : labels.indexOf(selectedDevice);
+  const selectedCount = selectedIndex >= 0 ? series[selectedIndex] : total;
+  const centerLabel = selectedIndex >= 0 ? labels[selectedIndex] : "Top 10";
 
   const options: ApexCharts.ApexOptions = {
-    chart: { type: "donut", toolbar: { show: false }, animations: { enabled: false } },
+    chart: {
+      type: "donut",
+      toolbar: { show: false },
+      animations: { enabled: false },
+      events: {
+        dataPointSelection: (_event, _chartContext, config) => {
+          const index = config.dataPointIndex;
+          if (index < 0 || index >= labels.length) return;
+          setSelectedDevice((previous) => previous === labels[index] ? null : labels[index]);
+        },
+      },
+    },
     labels,
     legend: { position: "bottom", fontSize: "10px", markers: { size: 4 }, itemMargin: { horizontal: 5, vertical: 2 } },
     stroke: { width: 2, colors: ["#ffffff"] },
     dataLabels: { enabled: false },
     tooltip: {
+      theme: "light",
       y: {
         formatter: (value: number, opts) => {
           const item = stats[opts.seriesIndex];
@@ -33,18 +49,21 @@ const ApexChartLeft: React.FC = () => {
     },
     plotOptions: {
       pie: {
+        expandOnClick: false,
         donut: {
           size: "70%",
           labels: {
             show: true,
+            name: { show: false },
             total: {
               show: true,
-              label: "Top 10",
-              color: "#7b8798",
+              showAlways: true,
+              label: centerLabel,
+              color: "var(--syslog-donut-label, #7b8798)",
               fontSize: "11px",
-              formatter: () => total.toLocaleString(),
+              formatter: () => selectedCount.toLocaleString(),
             },
-            value: { show: true, color: "#14213d", fontSize: "14px", fontWeight: 700 },
+            value: { show: false },
           },
         },
       },
@@ -52,7 +71,7 @@ const ApexChartLeft: React.FC = () => {
   };
 
   return (
-    <section className="donut-card">
+    <section className="donut-card donut-card--devices">
       <div className="donut-card__header">
         <div>
           <span>Sources</span>
