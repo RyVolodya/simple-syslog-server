@@ -46,8 +46,7 @@ services:
       - syslog-net
 
   backend:
-    build:
-      context: ./backend
+    image: ghcr.io/ryvolodya/simple-syslog-backend:latest
     container_name: simple-syslog-backend
     restart: unless-stopped
     environment:
@@ -78,8 +77,7 @@ services:
       - syslog-net
 
   frontend:
-    build:
-      context: ./frontend
+    image: ghcr.io/ryvolodya/simple-syslog-frontend:latest
     container_name: simple-syslog-frontend
     restart: unless-stopped
     ports:
