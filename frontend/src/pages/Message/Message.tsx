@@ -10,6 +10,8 @@ import {
   LuShieldAlert,
   LuSlidersHorizontal,
   LuX,
+  LuArrowDown,
+  LuArrowUp,
 } from "react-icons/lu";
 import {
   ExportMessagesResponse,
@@ -106,6 +108,22 @@ const MessagesPage = () => {
   const [filters, setFilters] = useState<MessageQuery>({});
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [sortBy, setSortBy] = useState<NonNullable<MessageQuery["sortBy"]>>("time");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+  const changeSort = (column: NonNullable<MessageQuery["sortBy"]>) => {
+    if (column === sortBy) setSortDir((current) => current === "asc" ? "desc" : "asc");
+    else {
+      setSortBy(column);
+      setSortDir(column === "time" ? "desc" : "asc");
+    }
+    setPage(1);
+  };
+  const sortHeader = (label: string, column: NonNullable<MessageQuery["sortBy"]>) => (
+    <button type="button" className="messages-sort-button" onClick={() => changeSort(column)}
+      aria-label={`Sort ${label}`}>
+      {label} {sortBy === column ? (sortDir === "asc" ? <LuArrowUp size={13}/> : <LuArrowDown size={13}/>) : <span className="messages-sort-button__inactive">↕</span>}
+    </button>
+  );
   const [searchInput, setSearchInput] = useState("");
   const [exporting, setExporting] = useState<"excel" | "print" | null>(null);
 
@@ -121,9 +139,11 @@ const MessagesPage = () => {
     () => ({
       ...filters,
       page,
+      sortBy,
+      sortDir,
       limit: isFiltered ? limit : 10,
     }),
-    [filters, page, limit, isFiltered],
+    [filters, page, limit, isFiltered, sortBy, sortDir],
   );
 
   const { data, isLoading, isError } = useGetFilteredMessagesQuery(query, {
@@ -457,10 +477,10 @@ ${result.truncated ? `<footer>Export limited to the first ${result.maxRows?.toLo
           <table className="messages-table">
             <thead>
               <tr>
-                <th>Date & time</th>
-                <th>Device</th>
-                <th>Severity</th>
-                <th>Message</th>
+                <th aria-sort={sortBy === "time" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}>{sortHeader("Date & time", "time")}</th>
+                <th aria-sort={sortBy === "device" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}>{sortHeader("Device", "device")}</th>
+                <th aria-sort={sortBy === "severity" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}>{sortHeader("Severity", "severity")}</th>
+                <th aria-sort={sortBy === "message" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}>{sortHeader("Message", "message")}</th>
               </tr>
             </thead>
             <tbody>

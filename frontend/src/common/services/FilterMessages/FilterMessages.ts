@@ -23,6 +23,8 @@ export interface MessageQuery {
   search?: string;
   page?: number;
   limit?: number;
+  sortBy?: "time" | "device" | "severity" | "message";
+  sortDir?: "asc" | "desc";
 }
 
 export interface MessagesResponse {
@@ -58,13 +60,15 @@ export const messagesFilterApi = createApi({
       keepUnusedDataFor: 0,
     }),
     getFilteredMessages: builder.query<MessagesResponse, MessageQuery>({
-      query: ({ deviceId, type, fromTime, toTime, search, page = 1, limit = 10 }) => {
+      query: ({ deviceId, type, fromTime, toTime, search, page = 1, limit = 10, sortBy = "time", sortDir = "desc" }) => {
         const params = new URLSearchParams();
         if (deviceId) params.append("deviceId", deviceId);
         if (type !== undefined && type !== "") params.append("type", type);
         if (fromTime) params.append("from", fromTime);
         if (toTime) params.append("to", toTime);
         if (search?.trim()) params.append("search", search.trim());
+        params.append("sortBy", sortBy);
+        params.append("sortDir", sortDir);
         params.append("page", String(page));
         params.append("limit", String(limit));
         return `/messages-filter?${params.toString()}`;

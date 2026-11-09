@@ -151,6 +151,20 @@ router.get("/", async (req, res, next) => {
     const pageSize = [10, 25, 50, 100].includes(requestedLimit) ? requestedLimit : 10;
 
     const { params, whereSql } = buildWhere(req.query);
+    // Whitelist SQL expressions: never interpolate arbitrary client input into ORDER BY.
+    const sortColumns: Record<string, string> = {
+      time: "s.receivedat",
+      device: 'LOWER(syslog_device_display_name(d.name, COALESCE(d.reported_hostname, s.reported_hostname), s.fromhost))',
+      severity: "(s.priority & 7)",
+      message: "LOWER(s.message)",
+    };
+    const sortBy = String(req.query.sortBy ?? "time");
+    const sortDir = String(req.query.sortDir ?? "desc").toLowerCase() === "asc" ? "ASC" : "DESC";
+    const sortExpr = sortColumns[sortBy] ?? sortColumns.time;
+    // For ascending severity, start at Informational, then Notice through Emergency;
+    // Debug follows the operational severity sequence.
+    const severityOrder = "CASE (s.priority & 7) WHEN 6 THEN 0 WHEN 5 THEN 1 WHEN 4 THEN 2 WHEN 3 THEN 3 WHEN 2 THEN 4 WHEN 1 THEN 5 WHEN 0 THEN 6 WHEN 7 THEN 7 ELSE 8 END";
+    const orderExpr = sortBy === "severity" ? severityOrder : sortExpr;
 
     const countSql = `
       SELECT COUNT(*)::int AS total
@@ -179,7 +193,7 @@ router.get("/", async (req, res, next) => {
       FROM systemevents s
       LEFT JOIN devices d ON d.fromhost = s.fromhost
       ${whereSql}
-      ORDER BY s.receivedat DESC
+      ORDER BY ${orderExpr} ${sortDir} NULLS LAST, s.receivedat DESC, s.id DESC
       LIMIT $${limitParam} OFFSET $${offsetParam}
     `;
 

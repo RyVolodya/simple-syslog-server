@@ -705,3 +705,21 @@
 :root[data-theme="dark"] .severity-badge--5 { background: #0b3039; color: #22d3ee; }
 :root[data-theme="dark"] .severity-badge--6 { background: #152a4c; color: #60a5fa; }
 :root[data-theme="dark"] .severity-badge--7 { background: #263244; color: #cbd5e1; }
+
+/* Sortable filtered-message headers */
+.messages-sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.messages-sort-button:hover { text-decoration: underline; }
+.messages-sort-button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.messages-sort-button__inactive { opacity: .45; }
