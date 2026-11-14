@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import { useSubscribeMessageStatsQuery } from "../../services/MessagePercent/MessagePercent";
 import { useSubscribeDevicesPercentStatsQuery } from "../../services/DevicesPercent/DevicesPercent";
 import "./ApexChart.scss";
+import { DARK_DONUT_COLORS, LIGHT_DONUT_COLORS, useDarkDonutPalette } from "./useDarkDonutPalette";
 
 const baseOptions = (
   labels: string[],
@@ -35,7 +36,7 @@ const baseOptions = (
         size: "70%",
         labels: {
           show: true,
-          name: { show: true, color: "#7b8798", fontSize: "10px" },
+          name: { show: true, color: "#14213d", fontSize: "10px" },
           value: {
             show: true,
             color: "#14213d",
@@ -46,7 +47,7 @@ const baseOptions = (
           total: {
             show: true,
             label: totalLabel,
-            color: "#7b8798",
+            color: "#14213d",
             fontSize: "10px",
             formatter: () => totalValue,
           },
@@ -57,6 +58,7 @@ const baseOptions = (
 });
 
 export const EventHealthChart: React.FC = () => {
+  const dark = useDarkDonutPalette();
   const { data } = useSubscribeMessageStatsQuery();
 
   const grouped = useMemo(() => {
@@ -97,7 +99,7 @@ export const EventHealthChart: React.FC = () => {
     grouped.total > 0 ? "100%" : "0%",
     (value) => formatPercent(value),
     formatPercent,
-    ["#a855f7", "#ef4444", "#16a34a"],
+    dark ? ["#c4b5fd", "#fda4af", "#a3e635"] : ["#7c3aed", "#dc2626", "#15803d"],
   );
 
   return (
@@ -117,10 +119,11 @@ export const EventHealthChart: React.FC = () => {
 };
 
 export const SourceConcentrationChart: React.FC = () => {
+  const dark = useDarkDonutPalette();
   const { data } = useSubscribeDevicesPercentStatsQuery();
 
   const stats = useMemo(
-    () => (Array.isArray(data) ? data.slice(0, 10) : []),
+    () => (Array.isArray(data) ? data.slice().sort((a, b) => Number(b.messages ?? 0) - Number(a.messages ?? 0)).slice(0, 10) : []),
     [data],
   );
 
@@ -163,6 +166,7 @@ export const SourceConcentrationChart: React.FC = () => {
     formatPercent(topTenPercent),
     (value) => `${formatPercent(value)} of messages`,
     formatPercent,
+    dark ? LIGHT_DONUT_COLORS : DARK_DONUT_COLORS,
   );
 
   return (

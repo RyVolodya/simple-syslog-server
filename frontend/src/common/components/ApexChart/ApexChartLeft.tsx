@@ -2,6 +2,7 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import { useSubscribeDevicesPercentStatsQuery } from "../../services/DevicesPercent/DevicesPercent";
 import "./ApexChart.scss";
+import { DARK_DONUT_COLORS, LIGHT_DONUT_COLORS, useDarkDonutPalette } from "./useDarkDonutPalette";
 
 export interface StatsPayload {
   device_id: string;
@@ -10,8 +11,11 @@ export interface StatsPayload {
 }
 
 const ApexChartLeft: React.FC = () => {
+  const dark = useDarkDonutPalette();
   const { data } = useSubscribeDevicesPercentStatsQuery();
-  const stats: StatsPayload[] = Array.isArray(data) ? data : [];
+  const stats: StatsPayload[] = Array.isArray(data)
+    ? data.slice().sort((a, b) => Number(b.messages || 0) - Number(a.messages || 0)).slice(0, 10)
+    : [];
   const series = stats.map((item) => Number(item.messages || 0));
   const labels = stats.map((item) => item.device_id || "Unknown");
   const total = stats.reduce((sum, item) => sum + Number(item.messages || 0), 0);
@@ -19,6 +23,7 @@ const ApexChartLeft: React.FC = () => {
   const options: ApexCharts.ApexOptions = {
     chart: { type: "donut", toolbar: { show: false }, animations: { enabled: false } },
     labels,
+    colors: dark ? LIGHT_DONUT_COLORS : DARK_DONUT_COLORS,
     legend: { position: "bottom", fontSize: "10px", markers: { size: 4 }, itemMargin: { horizontal: 5, vertical: 2 } },
     stroke: { width: 2, colors: ["#ffffff"] },
     dataLabels: { enabled: false },
@@ -40,7 +45,7 @@ const ApexChartLeft: React.FC = () => {
             total: {
               show: true,
               label: "Top 10",
-              color: "#7b8798",
+              color: "#14213d",
               fontSize: "11px",
               formatter: () => total.toLocaleString(),
             },

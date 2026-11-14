@@ -36,3 +36,11 @@
   .apexcharts-legend-text { color: #56657a !important; }
   .apexcharts-tooltip { border: 1px solid #e7ecf3 !important; box-shadow: 0 10px 24px rgba(30,45,75,.10) !important; }
 }
+
+/* Keep the Donut Center Label and Center Value identical in the light theme,
+   including ApexCharts hover labels. Dark-theme overrides remain unchanged. */
+:root:not([data-theme="dark"]) .donut-card .apexcharts-datalabel-label,
+:root:not([data-theme="dark"]) .donut-card .apexcharts-datalabel-value,
+:root:not([data-theme="dark"]) .donut-card .apexcharts-datalabels-group text {
+  fill: #14213d !important;
+}

@@ -1,6 +1,6 @@
 {
   "name": "rsyslog-backend",
-  "version": "1.6.3",
+  "version": "1.6.40",
   "main": "dist/app.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
