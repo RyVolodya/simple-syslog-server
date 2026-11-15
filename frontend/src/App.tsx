@@ -13,7 +13,7 @@ import { useAuth } from "./auth/AuthContext";
 import { ServerTimeZoneContext } from "./common/timezone/ServerTimeZoneContext";
 
 export const App: React.FC = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, releaseNotice, dismissReleaseNotice } = useAuth();
   const [appName, setAppName] = useState(() => localStorage.getItem("appName") || "Simple Syslog Server");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -85,6 +85,10 @@ export const App: React.FC = () => {
       <div className="syslog__workspace">
         <Header onOpenMobile={()=>setMobileSidebarOpen(true)} theme={theme} onToggleTheme={()=>setTheme(v=>v === "light" ? "dark" : "light")} timeZoneInfo={serverTimeZone}/>
         <main className="syslog__content">
+          {releaseNotice && <div role="status" style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,padding:"12px 16px",marginBottom:16,borderRadius:10,background:theme === "dark" ? "#1e3a5f" : "#e0f2fe",color:theme === "dark" ? "#e0f2fe" : "#0c4a6e",border:"1px solid #38bdf8"}}>
+            <span>New Simple Syslog Server version available: <strong>{releaseNotice.version}</strong>. <a href={releaseNotice.url} target="_blank" rel="noopener noreferrer" style={{color:"inherit",textDecoration:"underline"}}>View release</a></span>
+            <button type="button" onClick={dismissReleaseNotice} aria-label="Dismiss update notification" style={{border:0,background:"transparent",color:"inherit",fontSize:22,cursor:"pointer"}}>×</button>
+          </div>}
           <Routes>
             <Route path="/login" element={<Navigate to="/dashboard" replace/>}/>
             <Route path="/change-password" element={<ChangePassword/>}/>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import ReactApexChart from "react-apexcharts";
 import { useSubscribeDevicesPercentStatsQuery } from "../../services/DevicesPercent/DevicesPercent";
 import "./ApexChart.scss";
@@ -6,12 +7,14 @@ import { DARK_DONUT_COLORS, LIGHT_DONUT_COLORS, useDarkDonutPalette } from "./us
 
 export interface StatsPayload {
   device_id: string;
+  device_key: number | null;
   messages: number;
   percent: number | string | null;
 }
 
 const ApexChartLeft: React.FC = () => {
   const dark = useDarkDonutPalette();
+  const navigate = useNavigate();
   const { data } = useSubscribeDevicesPercentStatsQuery();
   const stats: StatsPayload[] = Array.isArray(data)
     ? data.slice().sort((a, b) => Number(b.messages || 0) - Number(a.messages || 0)).slice(0, 10)
@@ -21,7 +24,15 @@ const ApexChartLeft: React.FC = () => {
   const total = stats.reduce((sum, item) => sum + Number(item.messages || 0), 0);
 
   const options: ApexCharts.ApexOptions = {
-    chart: { type: "donut", toolbar: { show: false }, animations: { enabled: false } },
+    chart: { type: "donut", toolbar: { show: false }, animations: { enabled: false }, events: {
+      dataPointSelection: (_event, _chart, config) => {
+        const device = stats[config.dataPointIndex]?.device_key;
+        if (device == null) return;
+        const now = new Date();
+        const params = new URLSearchParams({ deviceId: String(device), from: new Date(now.getTime() - 86400000).toISOString(), to: now.toISOString() });
+        navigate(`/message?${params.toString()}`);
+      },
+    } },
     labels,
     colors: dark ? LIGHT_DONUT_COLORS : DARK_DONUT_COLORS,
     legend: { position: "bottom", fontSize: "10px", markers: { size: 4 }, itemMargin: { horizontal: 5, vertical: 2 } },

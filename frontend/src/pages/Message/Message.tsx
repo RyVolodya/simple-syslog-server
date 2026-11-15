@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { FormEvent, useMemo, useState } from "react";
 import {
   LuActivity,
@@ -92,6 +93,11 @@ const getPaginationItems = (total: number, current: number): PaginationItem[] =>
 };
 
 const MessagesPage = () => {
+  const [urlParams] = useSearchParams();
+  const incomingDevice = urlParams.get("deviceId") || "";
+  const incomingType = urlParams.get("type") || "";
+  const incomingFrom = urlParams.get("from") || "";
+  const incomingTo = urlParams.get("to") || "";
   const serverTimeZone = useServerTimeZone();
   const formatDate = (value: string) => formatServerDateTime(value, serverTimeZone);
   const toIso = (value: string) => serverLocalDateTimeToIso(value, serverTimeZone);
@@ -100,12 +106,15 @@ const MessagesPage = () => {
     pollingInterval: 15000,
   });
 
-  const [draftDevice, setDraftDevice] = useState("");
-  const [draftType, setDraftType] = useState("");
+  const [draftDevice, setDraftDevice] = useState(incomingDevice);
+  const [draftType, setDraftType] = useState(incomingType);
   const [draftFrom, setDraftFrom] = useState("");
   const [draftTo, setDraftTo] = useState("");
 
-  const [filters, setFilters] = useState<MessageQuery>({});
+  const [filters, setFilters] = useState<MessageQuery>({
+    deviceId: incomingDevice || undefined, type: incomingType || undefined,
+    fromTime: incomingFrom || undefined, toTime: incomingTo || undefined,
+  });
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [sortBy, setSortBy] = useState<NonNullable<MessageQuery["sortBy"]>>("time");

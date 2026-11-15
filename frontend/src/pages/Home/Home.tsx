@@ -6,6 +6,7 @@ import { useSubscribeStatsQuery } from "../../common/services/StatsDevices/Stats
 import { useGetFilteredMessagesQuery } from "../../common/services/FilterMessages/FilterMessages";
 import MessagesChart from "../../common/components/MessagesChart/MessagesChart";
 import ApexChartLeft from "../../common/components/ApexChart/ApexChartLeft";
+import ApexChartSeverity from "../../common/components/ApexChart/ApexChartSeverity";
 import { formatServerDateTime, useServerTimeZone } from "../../common/timezone/ServerTimeZoneContext";
 import { useAppSelector } from "../../hooks/hooks";
 
@@ -70,6 +71,7 @@ const Dashboard: React.FC = () => {
 
       <div className="dashboard-primary-grid">
         <ApexChartLeft />
+        <ApexChartSeverity />
         <MessagesChart />
       </div>
 
